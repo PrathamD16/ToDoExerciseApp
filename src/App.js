@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./App.css";
 
 
 function App() {
   return (
-    <div>
-      
+    <div className="mx-4">
+      <div className="bg-slate-600 p-3 text-white text-2xl">
+        <p>This is my paragraph</p>
+      </div>
     </div>
   );
 }
