@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-
+import React from "react";
+import NavBar from "./Components/NavBar";
 
 function App() {
   return (
-    <div className="mx-4">
-      <div className="bg-slate-600 p-3 text-white text-2xl">
-        <p>This is my paragraph</p>
-      </div>
+    <div className="max-w-screen-lg mx-auto">
+      <NavBar username={"Pratham Doke"} />
     </div>
   );
 }
