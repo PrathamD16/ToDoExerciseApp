@@ -17,16 +17,18 @@ router.route("/:email").get((req, res) => {
 
 //Add new exercises in database.
 router.route("/add").post((req, res) => {
+  const title = req.body.title;
   const email = req.body.email;
   const description = req.body.description;
   const duration = Number(req.body.duration);
   const date = Date.parse(req.body.date);
 
   const newExercise = new Exercise({
+    title,
+    date,
+    duration,
     email,
     description,
-    duration,
-    date,
   });
 
   newExercise
@@ -53,6 +55,7 @@ router.route("/:id").delete((req, res) => {
 router.route("/update/:id").patch((req, res) => {
   Exercise.findById(req.params.id)
     .then((exercise) => {
+      exercise.title = req.body.title;
       exercise.description = req.body.description;
       exercise.duration = Number(req.body.duration);
       exercise.date = Date.parse(req.body.date);
