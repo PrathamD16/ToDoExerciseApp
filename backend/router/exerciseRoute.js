@@ -9,7 +9,7 @@ router.route("/").get((req, res) => {
 });
 
 //get all exercises on the basis of email ID
-router.route("/:email").get((req, res) => {
+router.route("user/:email").get((req, res) => {
   Exercise.find({ email: req.params.email })
     .then((exercises) => res.json(exercises))
     .catch((err) => res.status(400).json("Error: " + err));
@@ -55,10 +55,33 @@ router.route("/:id").delete((req, res) => {
 router.route("/update/:id").patch((req, res) => {
   Exercise.findById(req.params.id)
     .then((exercise) => {
-      exercise.title = req.body.title;
-      exercise.description = req.body.description;
-      exercise.duration = Number(req.body.duration);
-      exercise.date = Date.parse(req.body.date);
+      if(req.body.title != null){
+        exercise.title = req.body.title;
+      }
+      else{
+        exercise.title = exercise.title;
+      }
+
+      if(req.body.description != null){
+        exercise.description = req.body.description
+      }
+      else{
+        exercise.description = exercise.description
+      }
+
+      if(req.body.duration != null){
+        exercise.duration = Number(req.body.duration);
+      }
+      else{
+        exercise.duration = Number(exercise.duration);
+      }
+
+      if(req.body.date != null){
+        exercise.date = Date.parse(req.body.date);
+      }
+      else{
+        exercise.date = exercise.date;
+      }
       exercise
         .save()
         .then(() => res.json("Exercise updated!"))

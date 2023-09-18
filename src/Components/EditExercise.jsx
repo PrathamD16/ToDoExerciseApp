@@ -1,31 +1,47 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
-//Email Id to be imported as props from google authentication
-function AddExercise({ email }) {
+function EditExercise() {
+  const [email, setEmail] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDesc] = useState("");
   const [duration, setDuration] = useState(0);
   const [date, setDate] = useState("");
-  const nav = useNavigate();
 
-  const submitHandler = (e) => {
-    //post it to the
-    const newExercise = { title, email, description, duration, date };
-    axios
-      .post("http://localhost:5000/exercise/add", newExercise)
-      .then(() => {
-        console.log(newExercise);
-        nav("/");
-      })
-      .catch((e) => console.log(e));
+  const { id } = useParams();
+  const nav = useNavigate();
+  var obj = new Date();
+
+  useEffect(() => {
+    async function getSingleExercise() {
+      const res = await axios.get(`http://localhost:5000/exercise/${id}`);
+      setEmail(res.data.email);
+      setTitle(res.data.title);
+      setDesc(res.data.description);
+      setDuration(Number(res.data.duration));
+      setDate(obj.toISOString(res.data.date).substring(0, 10));
+    }
+    getSingleExercise();
+  }, []);
+
+  const editHandler = (e) => {
+    const updatedOne = { email, title, description, duration, date };
+    console.log(updatedOne);
+    axios.patch(`http://localhost:5000/exercise/update/${id}`,updatedOne)
+    .then(() => {
+        nav('/')
+        console.log("Success");
+    })
+    .catch(e => console.log(e))
     e.preventDefault();
   };
 
   return (
     <div className="my-3">
-      <form className="p-2 lg:p-0 space-y-3" onSubmit={submitHandler}>
+      <form className="p-2 lg:p-0 space-y-3" onSubmit={editHandler}>
         {/* Exercise name */}
         <div>
           <p className="text-xl">Name of exercise</p>
@@ -80,7 +96,7 @@ function AddExercise({ email }) {
             type="submit"
             className="bg-green-500 flex-1 py-2 rounded-md text-white hover:bg-green-800"
           >
-            Add
+            Make Changes
           </button>
         </div>
       </form>
@@ -88,4 +104,4 @@ function AddExercise({ email }) {
   );
 }
 
-export default AddExercise;
+export default EditExercise;
