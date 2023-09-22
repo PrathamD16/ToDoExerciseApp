@@ -9,10 +9,9 @@ function DisplayExercise({ emailId }) {
   const [list, setList] = useState([]);
   var req;
 
-
   useEffect(() => {
     async function getData() {
-      req = await axios.get("http://localhost:5000/exercise/");
+      req = await axios.get(`http://localhost:5000/exercise/user/${emailId}`);
       setList(req.data);
     }
     getData();
