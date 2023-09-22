@@ -9,7 +9,7 @@ router.route("/").get((req, res) => {
 });
 
 //get all exercises on the basis of email ID
-router.route("user/:email").get((req, res) => {
+router.route("/user/:email").get((req, res) => {
   Exercise.find({ email: req.params.email })
     .then((exercises) => res.json(exercises))
     .catch((err) => res.status(400).json("Error: " + err));
